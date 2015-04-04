@@ -1,0 +1,68 @@
+@(urlGoogle: String)
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>Login</title>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width" />
+</head>
+
+<body>
+<div class="container">
+	<div class="row">
+		<form class="form-signin mg-btm">
+    	<h3 class="heading-desc">
+		Login to flipper</h3>
+		<div class="social-box">
+			<div class="row mg-btm">
+             <div class="col-md-12">
+                <a href="#" class="btn btn-primary btn-block">
+                  <i class="icon-facebook"></i>    Login with Facebook
+                </a>
+			</div>
+			</div>
+			<div class="row">
+			<div class="col-md-12">
+                <a href="@urlGoogle" class="btn btn-info btn-block" >
+                  <i class="icon-google"></i>    Login with Google
+                </a>
+            </div>
+          </div>
+		</div>
+		<div class="main">	
+        
+		<input type="text" class="form-control" placeholder="Email" autofocus>
+        <input type="password" class="form-control" placeholder="Password">
+		 
+        Are you a business? <a href=""> Get started here</a>
+		<span class="clearfix"></span>	
+        </div>
+		<div class="login-footer">
+		<div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <div class="left-section">
+								<a href="">Forgot your password?</a>
+								<a href="">Sign up now</a>
+							</div>
+                        </div>
+                        <div class="col-xs-6 col-md-6 pull-right">
+                            <button type="submit" class="btn btn-large btn-danger pull-right">Login</button>
+                        </div>
+                    </div>
+		
+		</div>
+      </form>
+	</div>
+</div>
+</body>
+
+<link rel="stylesheet" href="@routes.Assets.at("components/bootstrap/dist/css/bootstrap.min.css")" >
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/login.css")" >
+
+</html>
+
