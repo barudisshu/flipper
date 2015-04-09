@@ -49,10 +49,12 @@ class Cassandra(keyspace: Option[String] = None, host: Seq[String], port: Int) e
   }
 
   def executeAsync(query: String, params: AnyRef*): Future[ResultSet] = {
+    logger.debug(s"Executing query $query")
     keyspaceSession.executeAsync(query, params: _*)
   }
 
   def executeAsync(query: Statement): Future[ResultSet] = {
+    logger.debug(s"Executing query $query")
     keyspaceSession.executeAsync(query)
   }
 

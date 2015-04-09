@@ -4,10 +4,11 @@
 
 CREATE TABLE users (
 	email text PRIMARY KEY,
+	password text,
 	id uuid,
 	locale text,
 	created_at timestamp,
-	last_login timestamp 
+	last_update timestamp 
 );
 
 -- down:

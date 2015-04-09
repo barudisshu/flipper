@@ -5,7 +5,7 @@ import org.scalatest.FunSuite
 import scala.util.{ Success, Failure }
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-import com.undeploy.TestApplicationContext._
+import com.undeploy.test.TestApplicationContext._
 import com.undeploy.test.Faker
 import scala.concurrent.duration._
 import com.undeploy.flipper.User
