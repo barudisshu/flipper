@@ -1,4 +1,4 @@
-package com.undeploy.flipper
+package com.undeploy.flipper.dao
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
@@ -7,6 +7,8 @@ import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.Row
 import com.undeploy.lang.Converters._
 import java.util.UUID
+import com.undeploy.flipper.PUser
+import com.undeploy.flipper.PUsers
 
 class CassandraUsers(cassandra: Cassandra) extends PUsers {
 

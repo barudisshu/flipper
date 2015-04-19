@@ -4,6 +4,7 @@ import scalaoauth2.provider.AuthInfo
 import com.undeploy.flipper.User
 import java.util.UUID
 import org.joda.time.DateTime
+import scala.concurrent.Future
 
 case class ApiUser(
   email: String,
@@ -23,5 +24,7 @@ object ApiDelegate {
       user.lastUpdate)
   }
 
-  def me(authInfo: AuthInfo[User]): ApiUser = authInfo.user
+  def me(authInfo: AuthInfo[User]): Future[ApiUser] = {
+    Future.successful(authInfo.user)
+  }
 }

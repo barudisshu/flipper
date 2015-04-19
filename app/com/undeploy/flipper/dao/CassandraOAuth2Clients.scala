@@ -1,15 +1,14 @@
-package com.undeploy.flipper
+package com.undeploy.flipper.dao
 
 import scala.concurrent._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import com.datastax.driver.core.Row
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.undeploy.cassandra.Cassandra
 import com.undeploy.lang.Converters._
-import org.mindrot.jbcrypt.BCrypt
 import scala.collection.JavaConverters._
-import scala.collection.immutable.HashSet
+import com.undeploy.flipper.POAuth2Client
+import com.undeploy.flipper.POAuth2Clients
 
 class CassandraOAuth2Clients(cassandra: Cassandra) extends POAuth2Clients {
 

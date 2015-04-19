@@ -22,5 +22,8 @@ libraryDependencies ++= Seq(
   "org.mindrot" % "jbcrypt" % "0.3m",
   "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.5.1",
   "com.fasterxml.jackson.datatype" % "jackson-datatype-joda" % "2.5.2",
-  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
+  "ch.qos.logback" % "logback-classic" % "1.1.3",
+  "ch.qos.logback" % "logback-core" % "1.1.3",
+  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
+  "org.apache.cassandra" % "cassandra-all" % "2.1.4" % "test"
 )

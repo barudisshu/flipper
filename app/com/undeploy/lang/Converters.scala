@@ -8,18 +8,18 @@ import com.ibm.icu.util.ULocale
 
 object Converters {
   implicit def ToDateTime(date: Date): DateTime = {
-    Option(date) map { d => new DateTime(d.getTime, DateTimeZone.UTC) } orNull
+    Option(date).map(d => new DateTime(d.getTime, DateTimeZone.UTC)).orNull
   }
 
   implicit def ToDate(dateTime: DateTime): Date = {
-    Option(dateTime) map { d => d.toDate() } orNull
+    Option(dateTime).map(_.toDate()).orNull
   }
 
   implicit def ToString(locale: Locale): String = {
-    Option(locale) map { loc => loc.toString() } orNull
+    Option(locale).map(_.toString()).orNull
   }
 
   implicit def ToLocale(locale: String): Locale = {
-    Option(locale) map { loc => new ULocale(locale).toLocale() } orNull
+    Option(locale).map(loc => new ULocale(locale).toLocale()).orNull
   }
 }

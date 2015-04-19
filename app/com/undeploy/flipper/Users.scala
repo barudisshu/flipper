@@ -64,7 +64,7 @@ class Users(pUsers: PUsers) {
   }
 
   implicit def fromPUser(user: Option[PUser]): Option[User] = {
-    user.map[User] { x => x }
+    user.map { x => x }
   }
 
   def findByEmail(email: String): Future[Option[User]] = {

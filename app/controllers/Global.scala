@@ -1,7 +1,6 @@
 package controllers
 
 import scala.concurrent.Future
-
 import play.api._
 import play.api.Play.current
 import play.api.mvc._
@@ -15,11 +14,13 @@ import com.undeploy.play.pac4j._
 import com.undeploy.flipper.ApplicationContext
 import com.undeploy.flipper.Users
 import com.undeploy.flipper.Passwords
-import com.undeploy.flipper.CassandraUsers
-import com.undeploy.flipper.CassandraPasswords
+import com.undeploy.flipper.dao.CassandraUsers
+import com.undeploy.flipper.dao.CassandraPasswords
 import com.undeploy.flipper.OAuth2Clients
-import com.undeploy.flipper.CassandraOAuth2Clients
 import com.undeploy.oauth2.CassandraOAuth2DataHandler
+import com.undeploy.flipper.dao.CassandraOAuth2Clients
+import com.undeploy.flipper.dao.CassandraEvents
+import com.undeploy.flipper.Events
 
 object Global extends GlobalSettings {
 
@@ -52,6 +53,9 @@ object Global extends GlobalSettings {
       val clients = OAuth2Clients(pClients)
 
       val oauth2Handler = new CassandraOAuth2DataHandler(users, passwords, clients, cassandra)
+
+      val pEvents = new CassandraEvents(cassandra)
+      val events = Events(pEvents)
     }
 
   }

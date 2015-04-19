@@ -4,9 +4,11 @@ import com.undeploy.cassandra.Cassandra
 import scalaoauth2.provider.DataHandler
 
 trait ApplicationContext {
-  val cassandra : Cassandra
-  val users : Users
-  val passwords : Passwords
+  val cassandra: Cassandra
+  val users: Users
+  val passwords: Passwords
   val clients: OAuth2Clients
-  val oauth2Handler : DataHandler[User]
+  val oauth2Handler: DataHandler[User]
+  val events: Events
+
 }

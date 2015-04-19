@@ -64,6 +64,9 @@ class Cassandra(keyspace: Option[String] = None, host: Seq[String], port: Int) e
   }
 }
 object Cassandra {
+
+  val logger = LoggerFactory.getLogger(this.getClass)
+
   def apply(host: Seq[String], port: Int) =
     new Cassandra(None, host, port)
 
@@ -71,7 +74,10 @@ object Cassandra {
     new Cassandra(Some(keyspace), host, port)
 
   def migrate(keyspace: String, host: Seq[String], port: Int): Cassandra = {
-    val registry = Registry.fromDirectory(new File(getClass.getResource("/migrations").toURI))
+    val registry = Option(getClass.getResource("/migrations")).map { m =>
+      Registry.fromDirectory(new File(m.toURI))
+    } getOrElse (new Registry(Seq()))
+    logger.info(s"Found ${registry.all.length} migrations ")
     val migrator = Migrator(registry)
     var cassandra: Cassandra = null
     try {

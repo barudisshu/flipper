@@ -1,4 +1,4 @@
-package com.undeploy.flipper
+package com.undeploy.flipper.dao
 
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -7,6 +7,8 @@ import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.undeploy.cassandra.Cassandra
 import com.undeploy.lang.Converters._
 import org.mindrot.jbcrypt.BCrypt
+import com.undeploy.flipper.PPasswords
+import com.undeploy.flipper.PPassword
 
 class CassandraPasswords(cassandra: Cassandra) extends PPasswords {
 

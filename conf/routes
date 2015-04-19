@@ -10,7 +10,7 @@ GET    /logout                   org.pac4j.play.CallbackController.logoutAndRedi
 
 # Frontend APIs
 
-GET    /account                  controllers.rest.Account.account
+GET    /account                  controllers.Account.account
 
 
 # Map static resources from the /public folder to the /assets URL path
@@ -18,5 +18,5 @@ GET    /assets/*file             controllers.Assets.at(path="/public", file)
 
 # API and OAuth2  version 1
 
-POST   /v1/oauth2/access_token   controllers.OAuth2Controller.accessToken
-GET    /v1/me                    controllers.ApiVersion1Controller.me
+POST   /v1/oauth2/access_token   controllers.api.OAuth2Controller.accessToken
+GET    /v1/me                    controllers.api.ApiVersion1Controller.me
