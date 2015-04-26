@@ -28,7 +28,7 @@ class CassandraUsers(cassandra: Cassandra) extends PUsers {
       .executeAsync(QueryBuilder.select()
         .all().from("users")
         .where(QueryBuilder.eq("email", email.toLowerCase)))
-      .map { res => res.one() }
+      .map(res => res.one())
   }
 
   override def findById(id: UUID): Future[Option[PUser]] = {
@@ -36,7 +36,7 @@ class CassandraUsers(cassandra: Cassandra) extends PUsers {
       .executeAsync(QueryBuilder.select()
         .all().from("users")
         .where(QueryBuilder.eq("id", id)))
-      .map { res => res.one() }
+      .map(res => res.one())
   }
 
   override def insert(user: PUser): Future[PUser] = {
@@ -48,7 +48,7 @@ class CassandraUsers(cassandra: Cassandra) extends PUsers {
         .value("locale", user.locale)
         .value("created_at", user.createdAt)
         .value("last_update", user.lastUpdate))
-      .map { res => user }
+      .map(res => user)
   }
 
   override def update(user: PUser): Future[PUser] = {
@@ -58,7 +58,7 @@ class CassandraUsers(cassandra: Cassandra) extends PUsers {
         .`with`(QueryBuilder.set("locale", user.locale))
         .and(QueryBuilder.set("last_update", user.lastUpdate))
         .where(QueryBuilder.eq("email", user.email)))
-      .map { res => user }
+      .map(res => user)
   }
 
   override def deleteByEmail(email: String): Future[String] = {
@@ -66,6 +66,6 @@ class CassandraUsers(cassandra: Cassandra) extends PUsers {
       .executeAsync(QueryBuilder.delete()
         .from("users")
         .where(QueryBuilder.eq("email", email.toLowerCase)))
-      .map { res => email }
+      .map(res => email)
   }
 }
