@@ -12,7 +12,7 @@ object Converters {
   }
 
   implicit def ToDate(dateTime: DateTime): Date = {
-    Option(dateTime).map(_.toDate()).orNull
+    Option(dateTime).map(_.toDateTime(DateTimeZone.UTC).toDate()).orNull
   }
 
   implicit def ToString(locale: Locale): String = {
