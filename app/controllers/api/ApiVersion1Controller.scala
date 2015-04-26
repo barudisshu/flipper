@@ -18,7 +18,7 @@ object ApiVersion1Controller extends Controller with OAuth2Provider {
   def me = Action.async { implicit request =>
     authorize(Global.context().oauth2Handler) { authInfo =>
       ApiDelegate.me(authInfo).map { user =>
-        Ok(Json.toJson(user))
+        Ok(Json.toBytes(user))
       }
     }
   }
