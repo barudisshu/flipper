@@ -1,7 +1,6 @@
 package com.undeploy.flipper
 
 import com.undeploy.cassandra.Cassandra
-
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import com.datastax.driver.core.ResultSet
@@ -16,6 +15,7 @@ import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.querybuilder.QueryBuilder._
 import com.undeploy.lang.Converters._
 import org.mindrot.jbcrypt.BCrypt
+import com.undeploy.lang.Time
 
 case class PUser(
   email: String,
@@ -76,7 +76,7 @@ class Users(pUsers: PUsers) {
   }
 
   def save(user: User): Future[User] = {
-    val now = DateTime.now()
+    val now = Time.timestamp()
     findByEmail(user.email).flatMap(
       _.map({ u =>
         pUsers.update(u.copy(locale = user.locale, lastUpdate = now))

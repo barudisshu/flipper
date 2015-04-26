@@ -13,8 +13,16 @@ import scala.util.Random
 import org.apache.commons.lang3.RandomStringUtils
 import com.undeploy.flipper.Password
 import com.undeploy.flipper.OAuth2Client
+import org.joda.time.DateTimeZone
+import com.undeploy.lang.Time
 
 object Faker {
+
+  val _random = new Random()
+
+  def uuid() = UUID.randomUUID()
+
+  def timestamp() = Time.timestamp()
 
   def url() =
     s"http://${randomAlphanumeric(10)}.com/${randomAlphanumeric(10)}"
@@ -30,10 +38,10 @@ object Faker {
 
   def user() = User(
     Faker.email(),
-    UUID.randomUUID(),
+    uuid(),
     Locale.ITALY,
-    DateTime.now(),
-    DateTime.now())
+    timestamp(),
+    timestamp())
 
   def authInfo() = AuthInfo[User](
     user(),
@@ -43,12 +51,12 @@ object Faker {
 
   def authCode() = AuthCode(
     alphaNumeric(),
-    UUID.randomUUID(),
+    uuid(),
     Some(url()),
-    DateTime.now(),
+    timestamp(),
     Some(oauth2Scope()),
     Some(alphaNumeric()),
-    new Random().nextLong())
+    _random.nextLong())
 
   def password() = Password(
     email(),
@@ -57,7 +65,7 @@ object Faker {
   def oauth2Client() = OAuth2Client(
     alphaNumeric(),
     Some(alphaNumeric()),
-    UUID.randomUUID(),
+    uuid(),
     Some(url()),
     Some(oauth2Scope()),
     Set("client_credentials"))
