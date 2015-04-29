@@ -13,6 +13,7 @@ import scala.util.Random
 import org.apache.commons.lang3.RandomStringUtils
 import com.undeploy.flipper.Password
 import com.undeploy.flipper.OAuth2Client
+import com.undeploy.flipper.Event
 import org.joda.time.DateTimeZone
 import com.undeploy.lang.Time
 
@@ -69,5 +70,19 @@ object Faker {
     Some(url()),
     Some(oauth2Scope()),
     Set("client_credentials"))
+
+  def event() = Event(
+    uuid(),
+    Some(uuid()),
+    uuid(),
+    timestamp(),
+    timestamp(),
+    timestamp(),
+    Map("string" -> randomString(),
+      "long" -> _random.nextLong(),
+      "float" -> _random.nextFloat(),
+      "double" -> _random.nextDouble(),
+      "true" -> true,
+      "false" -> false))
 
 }

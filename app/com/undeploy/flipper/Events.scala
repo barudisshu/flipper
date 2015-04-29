@@ -1,45 +1,85 @@
 package com.undeploy.flipper
 
-import com.undeploy.cassandra.Cassandra
-
-import scala.concurrent._
-import ExecutionContext.Implicits.global
-import com.datastax.driver.core.ResultSet
-import com.datastax.driver.core.Row
-import java.util.UUID
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 import java.util.Date
-import com.ibm.icu.util.ULocale
-import java.util.Locale
-import com.datastax.driver.core.querybuilder.QueryBuilder
-import com.datastax.driver.core.querybuilder.QueryBuilder._
-import com.undeploy.lang.Converters._
-import org.mindrot.jbcrypt.BCrypt
+import java.util.UUID
 
-case class PEvent()
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+import org.joda.time.DateTime
+
+import com.undeploy.json.Json
+import com.undeploy.lang.ID
+import com.undeploy.lang.Time
+
+case class PEvent(
+  id: UUID,
+  schemaId: Option[UUID],
+  bucketId: UUID,
+  date: String,
+  collectedAt: Date,
+  timestamp: Date,
+  fields: Array[Byte])
 
 trait PEvents {
+  def insert(event: PEvent): Future[PEvent]
+  def findById(id: UUID): Future[Option[PEvent]]
+  def delete(event: PEvent): Future[PEvent]
 }
 
-case class Event()
+case class Event(
+  id: UUID,
+  schemaId: Option[UUID],
+  bucketId: UUID,
+  createdAt: DateTime,
+  collectedAt: DateTime,
+  timestamp: DateTime,
+  fields: Map[String, Any])
 
 class Events(pEvents: PEvents) {
 
-  implicit def toPEvent(Event: Event): PEvent = {
-    Option(Event) map { u =>
-      PEvent()
+  implicit def toPEvent(event: Event): PEvent = {
+    Option(event) map { e =>
+      PEvent(
+        e.id,
+        e.schemaId,
+        e.bucketId,
+        Time.toISODate(e.timestamp),
+        Time.toDate(e.collectedAt),
+        Time.toDate(e.timestamp),
+        Json.toBytes(e.fields))
     } orNull
   }
 
   implicit def fromPEvent(event: PEvent): Event = {
-    Option(event) map { u =>
-      Event()
+    Option(event) map { e =>
+      Event(
+        e.id,
+        e.schemaId,
+        e.bucketId,
+        ID.toDateTime(e.id),
+        Time.toDateTime(e.collectedAt),
+        Time.toDateTime(e.timestamp),
+        Json.parse(e.fields))
     } orNull
   }
 
   implicit def fromPEvent(event: Option[PEvent]): Option[Event] = {
-    event.map { x => x }
+    event.map(x => x)
+  }
+
+  def publish(event: Event): Future[Event] = {
+    val id = ID.time()
+    val e = event.copy(id = id, createdAt = ID.toDateTime(id))
+    pEvents.insert(e).map(x => x)
+  }
+
+  def findById(id: UUID): Future[Option[Event]] = {
+    pEvents.findById(id).map(x => x)
+  }
+
+  def delete(event: Event): Future[Event] = {
+    pEvents.delete(event).map(x => x)
   }
 
 }

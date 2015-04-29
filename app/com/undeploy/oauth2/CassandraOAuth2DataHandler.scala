@@ -1,25 +1,28 @@
 package com.undeploy.oauth2
 
 import java.util.UUID
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.mindrot.jbcrypt.BCrypt
+
 import com.datastax.driver.core.Row
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.undeploy.cassandra.Cassandra
+import com.undeploy.flipper.OAuth2Clients
 import com.undeploy.flipper.Passwords
 import com.undeploy.flipper.User
 import com.undeploy.flipper.Users
-import com.undeploy.lang.Converters.ToDate
-import com.undeploy.lang.Converters.ToDateTime
+import com.undeploy.lang.Time
+import com.undeploy.lang.Time.toDate
+
 import scalaoauth2.provider.AccessToken
 import scalaoauth2.provider.AuthInfo
 import scalaoauth2.provider.ClientCredential
 import scalaoauth2.provider.DataHandler
-import com.undeploy.flipper.OAuth2Clients
-import com.undeploy.flipper.OAuth2Client
 
 case class UserAccessToken(
   accessToken: String,
@@ -51,7 +54,7 @@ class CassandraOAuth2DataHandler(
       accessToken.refreshToken,
       accessToken.scope,
       accessToken.expiresIn,
-      accessToken.createdAt)
+      Time.toDate(accessToken.createdAt))
   }
 
   implicit def toAccessToken(accessToken: Option[UserAccessToken]): Option[AccessToken] = {
@@ -66,7 +69,7 @@ class CassandraOAuth2DataHandler(
         r.getUUID("user_id"),
         Some(r.getString("scope")),
         Some(r.getLong("expires_id")),
-        r.getDate("created_at"),
+        Time.toDateTime(r.getDate("created_at")),
         Some(r.getString("client_id")))
     }
   }
@@ -77,7 +80,7 @@ class CassandraOAuth2DataHandler(
         r.getString("authorization_code"),
         r.getUUID("user_id"),
         Some(r.getString("redirect_uri")),
-        r.getDate("created_at"),
+        Time.toDateTime(r.getDate("created_at")),
         Some(r.getString("scope")),
         Some(r.getString("client_id")),
         r.getLong("expires_in"))
@@ -97,7 +100,7 @@ class CassandraOAuth2DataHandler(
     val q = QueryBuilder.update("accesstokens")
       .`with`(
         QueryBuilder.set("access_token", accessToken.accessToken))
-      .and(QueryBuilder.set("created_at", ToDate(accessToken.createdAt)))
+      .and(QueryBuilder.set("created_at", toDate(accessToken.createdAt)))
 
     accessToken.refreshToken.foreach({ v => q.and(QueryBuilder.set("refresh_token", v)) })
     accessToken.scope.foreach({ v => q.and(QueryBuilder.set("scope", v)) })
@@ -155,7 +158,7 @@ class CassandraOAuth2DataHandler(
     val q = QueryBuilder.update("authcodes")
       .`with`(
         QueryBuilder.set("user_id", authCode.userId))
-      .and(QueryBuilder.set("created_at", ToDate(authCode.createdAt)))
+      .and(QueryBuilder.set("created_at", toDate(authCode.createdAt)))
       .and(QueryBuilder.set("expires_in", authCode.expiresIn.toInt))
 
     authCode.clientId.foreach(v => q.and(QueryBuilder.set("client_id", v)))

@@ -3,20 +3,21 @@
 # ~~~~
 
 # Home page
-GET    /                         controllers.Application.index
-GET    /callback                 org.pac4j.play.CallbackController.callback()
-POST   /callback                 org.pac4j.play.CallbackController.callback()
-GET    /logout                   org.pac4j.play.CallbackController.logoutAndRedirect()
+GET    /                              controllers.Application.index
+GET    /callback                      org.pac4j.play.CallbackController.callback()
+POST   /callback                      org.pac4j.play.CallbackController.callback()
+GET    /logout                        org.pac4j.play.CallbackController.logoutAndRedirect()
 
 # Frontend APIs
 
-GET    /account                  controllers.Account.account
+GET    /account                       controllers.Account.account
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET    /assets/*file             controllers.Assets.at(path="/public", file)
+GET    /assets/*file                  controllers.Assets.at(path="/public", file)
 
 # API and OAuth2  version 1
 
-POST   /v1/oauth2/access_token   controllers.api.OAuth2Controller.accessToken
-GET    /v1/me                    controllers.api.ApiVersion1Controller.me
+POST   /v1/oauth2/access_token        controllers.api.OAuth2Controller.accessToken
+GET    /v1/me                         controllers.api.ApiVersion1Controller.me
+POST   /v1/buckets/:bucketId/events   controllers.api.ApiVersion1Controller.publishEvent(bucketId: java.util.UUID)
