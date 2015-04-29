@@ -24,6 +24,7 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.datatype" % "jackson-datatype-joda" % "2.5.2",
   "ch.qos.logback" % "logback-classic" % "1.1.3",
   "ch.qos.logback" % "logback-core" % "1.1.3",
+  "com.fasterxml.uuid" % "java-uuid-generator" % "3.1.4",
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
   "org.apache.cassandra" % "cassandra-all" % "2.1.4" % "test"
 )

@@ -1,20 +1,16 @@
 package com.undeploy.flipper
 
-import com.undeploy.cassandra.Cassandra
-import scala.concurrent._
-import ExecutionContext.Implicits.global
-import com.datastax.driver.core.ResultSet
-import com.datastax.driver.core.Row
-import java.util.UUID
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 import java.util.Date
-import com.ibm.icu.util.ULocale
 import java.util.Locale
-import com.datastax.driver.core.querybuilder.QueryBuilder
-import com.datastax.driver.core.querybuilder.QueryBuilder._
-import com.undeploy.lang.Converters._
-import org.mindrot.jbcrypt.BCrypt
+import java.util.UUID
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+import org.joda.time.DateTime
+
+import com.undeploy.lang.Converters.ToLocale
+import com.undeploy.lang.Converters.ToString
 import com.undeploy.lang.Time
 
 case class PUser(
@@ -47,8 +43,8 @@ class Users(pUsers: PUsers) {
         user.email.toLowerCase,
         user.id,
         user.locale,
-        user.createdAt,
-        user.lastUpdate)
+        Time.toDate(user.createdAt),
+        Time.toDate(user.lastUpdate))
     } orNull
   }
 
@@ -58,8 +54,8 @@ class Users(pUsers: PUsers) {
         user.email,
         user.id,
         user.locale,
-        user.createdAt,
-        user.lastUpdate)
+        Time.toDateTime(user.createdAt),
+        Time.toDateTime(user.lastUpdate))
     } orNull
   }
 

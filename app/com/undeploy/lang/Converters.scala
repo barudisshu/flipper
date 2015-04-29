@@ -7,13 +7,6 @@ import java.util.Locale
 import com.ibm.icu.util.ULocale
 
 object Converters {
-  implicit def ToDateTime(date: Date): DateTime = {
-    Option(date).map(d => new DateTime(d.getTime, DateTimeZone.UTC)).orNull
-  }
-
-  implicit def ToDate(dateTime: DateTime): Date = {
-    Option(dateTime).map(_.toDateTime(DateTimeZone.UTC).toDate()).orNull
-  }
 
   implicit def ToString(locale: Locale): String = {
     Option(locale).map(_.toString()).orNull
