@@ -15,16 +15,12 @@ import org.pac4j.play.scala._
 import play.api.libs.json.Json
 import com.undeploy.play.auth.Secured
 
-case class User(locale: Locale)
-
 object Application extends Secured {
 
   def index = Authenticated(profile =>
     Action.async { request =>
-      val locale = request2lang(request).toLocale.toString
-      WS.url(s"http://localhost:8090/users/${profile.getEmail}")
-        .withHeaders("Accept" -> "application/json")
-        .put(Json.obj("locale" -> locale))
+      val locale = request2lang(request).toLocale
+      Global.users.saveUser(locale, profile)
         .map { res => Ok(views.html.index(profile)) }
     },
     Action { request =>
