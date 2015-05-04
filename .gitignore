@@ -8,7 +8,9 @@ dist
 .classpath
 .project
 .settings
-/bin
-/public
-/server
+bin
+public
+server
 *.conf
+.cache
+*.log
