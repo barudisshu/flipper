@@ -41,4 +41,15 @@ object Global extends GlobalSettings {
 
   override def onStop(app: Application) = {
   }
+
+  import play.api.mvc.Results._
+  override def onError(request: RequestHeader, ex: Throwable) = {
+    Future.successful(
+      InternalServerError(views.html.errors(ex)))
+  }
+
+  override def onHandlerNotFound(request: RequestHeader) = {
+    Future.successful(
+      NotFound(views.html.error_404(request.path)))
+  }
 }
