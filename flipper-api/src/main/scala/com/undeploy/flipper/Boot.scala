@@ -58,7 +58,9 @@ object Boot extends App {
 
   implicit val timeout = Timeout(5.seconds)
 
-  val apiVersion1Service = system.actorOf(Props(new ApiVersion1Actor(appContext.oauth2Handler)), "api-version1-service")
+  val apiVersion1Service = system.actorOf(Props(new ApiVersion1Actor(
+    appContext.oauth2Handler,
+    appContext.users)), "api-version1-service")
   IO(Http) ? Http.Bind(apiVersion1Service, interface = "localhost", port = 8080)
 
   val apiInternalService = system.actorOf(Props(new ApiInternalActor(appContext)), "api-internal-service")

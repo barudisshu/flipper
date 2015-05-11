@@ -28,6 +28,12 @@ import spray.http.HttpRequest
 import spray.http.CacheDirectives._
 import spray.http.HttpHeaders._
 import scalaoauth2.provider.DataHandler
+import spray.routing.Route
+import spray.routing.authentication.HttpAuthenticator
+import spray.routing.RequestContext
+import spray.routing.AuthenticationFailedRejection
+import spray.routing.AuthorizationFailedRejection
+import spray.routing.RoutingSettings
 
 trait OAuth2HttpService[U] extends HttpService {
 
@@ -56,10 +62,16 @@ trait OAuth2HttpService[U] extends HttpService {
     }
   }
 
-  def authorize(callback: AuthInfo[U] => Future[HttpResponse])(implicit request: HttpRequest, ctx: ExecutionContext): Future[HttpResponse] = {
-    protectedResource.handleRequest(request, dataHandler).flatMap {
-      case Left(e)         => Future.successful(HttpResponse(e.statusCode, headers = responseOAuthErrorHeader(e)))
-      case Right(authInfo) => callback(authInfo)
+  import spray.routing.authentication.ContextAuthenticator;
+  import AuthenticationFailedRejection.CredentialsRejected;
+  def oauth2Auth()(implicit settings: RoutingSettings, ec: ExecutionContext): ContextAuthenticator[AuthInfo[U]] = {
+    new ContextAuthenticator[AuthInfo[U]] {
+      def apply(ctx: RequestContext) = {
+        protectedResource.handleRequest(ctx.request, dataHandler).map {
+          case Left(e)         => Left(AuthenticationFailedRejection(CredentialsRejected, responseOAuthErrorHeader(e)))
+          case Right(authInfo) => Right(authInfo)
+        }
+      }
     }
   }
 

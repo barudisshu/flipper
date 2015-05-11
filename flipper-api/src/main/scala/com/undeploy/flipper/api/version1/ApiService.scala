@@ -6,19 +6,25 @@ import spray.http._
 import spray.http.MediaTypes._
 import spray.httpx.marshalling.ToResponseMarshallable.isMarshallable
 import spray.routing.Directive.pimpApply
- 
-trait ApiService extends HttpService {
+import com.undeploy.oauth2.OAuth2HttpService
+import com.undeploy.flipper.User
+import scalaoauth2.provider.AuthInfo
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+import spray.routing.authentication.BasicAuth
+import com.undeploy.flipper.Users
+import com.undeploy.spray.Jackson._
+
+trait ApiService extends HttpService with OAuth2HttpService[User] {
+
+  val users: Users
 
   val apiVersion1 =
-    path("") {
-      get {
-        respondWithMediaType(`text/html`) { // XML is marshalled to `text/xml` by default, so we simply override here
+    path("me") {
+      authenticate(oauth2Auth) { authInfo =>
+        get {
           complete {
-            <html>
-              <body>
-                <h1>Public API</h1>
-              </body>
-            </html>
+            users.findById(authInfo.user.id)
           }
         }
       }
